@@ -1,0 +1,34 @@
+# Caches locales (profils Firefox headless, captures de QA)
+.cache/
+.qa_tmp/
+
+# Build Android (APK, dex, ressources compilées, copie www)
+android/build/
+*.apk
+*.apk.idsig
+*.aab
+*.dex
+
+# Clé de signature : à sauvegarder hors du dépôt, ne jamais la perdre
+*.keystore
+*.jks
+
+# Python (outils d'assets)
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+
+# Originaux MP3 inutilisés à la racine
+/*.mp3
+
+# Éditeurs et OS
+.vscode/
+.idea/
+*.swp
+*~
+.DS_Store
+Thumbs.db
+
+# Réglages locaux de Claude Code
+.claude/settings.local.json

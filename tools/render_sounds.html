@@ -1,0 +1,25 @@
+<!doctype html><meta charset="utf-8">
+<!-- Rend chaque bruitage TIA de js/assets.js en WAV mono 16 bits 44,1 kHz (tools/render_sounds.py → assets/sfx/). -->
+<script>window.NativeAudio = undefined;</script>
+<script src="../js/assets.js"></script>
+<script>
+const RATE = 44100, A = window.Airchase;
+function wav(data) {
+  const out = new DataView(new ArrayBuffer(44 + data.length * 2));
+  const str = (o, s) => [...s].forEach((c, i) => out.setUint8(o + i, c.charCodeAt(0)));
+  str(0, 'RIFF'); out.setUint32(4, 36 + data.length * 2, true); str(8, 'WAVEfmt ');
+  out.setUint32(16, 16, true); out.setUint16(20, 1, true); out.setUint16(22, 1, true);
+  out.setUint32(24, RATE, true); out.setUint32(28, RATE * 2, true); out.setUint16(32, 2, true); out.setUint16(34, 16, true);
+  str(36, 'data'); out.setUint32(40, data.length * 2, true);
+  data.forEach((v, i) => out.setInt16(44 + i * 2, Math.max(-1, Math.min(1, v)) * 32767, true));
+  return out.buffer;
+}
+(async () => {
+  // Faux contexte : A.Sfx.render n'utilise que sampleRate et createBuffer (le volume, 0.16, est appliqué à la lecture).
+  A.Sfx.ctx = { sampleRate: RATE, createBuffer: (c, n) => { const d = new Float32Array(n); return { getChannelData: () => d }; } };
+  for (const [name, def] of Object.entries(A.Sfx.SOUNDS)) {
+    await fetch('/save/' + name + '.wav', { method: 'POST', body: wav(A.Sfx.render(def.prog).getChannelData(0)) });
+  }
+  await fetch('/done', { method: 'POST' });
+})().catch((e) => fetch('/log', { method: 'POST', body: String(e) }));
+</script>

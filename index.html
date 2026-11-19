@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+  <title>Airchase</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <main id="screen">
+    <canvas id="game" width="320" height="240" aria-label="Airchase"></canvas>
+  </main>
+
+  <div id="touch" aria-hidden="true">
+    <div class="pad">
+      <button type="button" data-key="left">◀</button>
+      <button type="button" data-key="right">▶</button>
+    </div>
+    <div class="pad">
+      <button type="button" data-key="fire" class="fire">FIRE</button>
+    </div>
+  </div>
+
+  <div id="rotate">
+    <div class="icon"></div>
+    <p>ROTATE YOUR DEVICE<br>AIRCHASE IS PLAYED IN LANDSCAPE</p>
+  </div>
+
+  <script src="js/assets.js"></script>
+  <script src="js/input.js"></script>
+  <script src="js/score.js"></script>
+  <script src="js/ui.js"></script>
+  <script src="js/player.js"></script>
+  <script src="js/mothership.js"></script>
+  <script src="js/aliens.js"></script>
+  <script src="js/projectiles.js"></script>
+  <script src="js/collisions.js"></script>
+  <script src="js/effects.js"></script>
+  <script src="js/game.js"></script>
+  <script src="js/main.js"></script>
+</body>
+</html>
