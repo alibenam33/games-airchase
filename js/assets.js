@@ -53,12 +53,12 @@
     },
   };
 
-  // Musique de partie : music_1.ogg puis music_2.ogg en boucle, à 40 % du volume.
+  // Musique de partie (assets/music/) : music_1.ogg puis music_2.ogg en boucle, à 40 % du volume.
   // game_over.wav est joué une fois à l'affichage de l'écran de game over.
   // Exception voulue par l'utilisateur au son façon TIA : ce sont des fichiers audio ordinaires.
   A.Music = {
-    TRACKS: ['music_1.ogg', 'music_2.ogg'],
-    GAME_OVER: 'game_over.wav',
+    TRACKS: ['assets/music/music_1.ogg', 'assets/music/music_2.ogg'],
+    GAME_OVER: 'assets/music/game_over.wav',
     VOLUME: 0.4,
     audio: null,
     jingle: null,

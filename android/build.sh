@@ -3,7 +3,7 @@
 # Requiert : JDK 11+ (javac, keytool), Android SDK "platforms;android-34" + "build-tools;34.0.0" (ANDROID_HOME, défaut ~/Android/Sdk), Pillow.
 # Bruitages : joués par le SoundPool natif (window.NativeAudio) ; le Web Audio de la WebView a ~1 s de latence sur tablette Huawei.
 #   assets/sfx/<nom>.wav = sons TIA pré-rendus par tools/render_sounds.py (relancé si js/assets.js est plus récent).
-#   Musiques music_1.ogg / music_2.ogg et jingle game_over.wav lus par <audio>.
+#   Musiques assets/music/music_1.ogg / music_2.ogg et jingle game_over.wav lus par <audio>.
 # Installation : copier android/build/Airchase.apk sur la tablette et l'ouvrir (ou adb install -r).
 set -e
 HERE="$(cd "$(dirname "$0")" && pwd)"; ROOT="$(dirname "$HERE")"
@@ -16,10 +16,15 @@ if [ ! -d "$ROOT/assets/sfx" ] || [ -n "$(find "$ROOT/js/assets.js" -newer "$ROO
   python3 "$ROOT/tools/render_sounds.py"
 fi
 
+# musique : vérifiée avant le rm -rf, pour ne jamais vider le build sans pouvoir le refaire
+for f in music_1.ogg music_2.ogg game_over.wav; do
+  [ -f "$ROOT/assets/music/$f" ] || { echo "Manquant : assets/music/$f"; exit 1; }
+done
+
 B="$HERE/build"; W="$B/assets/www"; rm -rf "$B"; mkdir -p "$W/assets" "$B/classes" "$B/dex" "$B/res"
-cp "$ROOT"/index.html "$ROOT"/music_1.ogg "$ROOT"/music_2.ogg "$ROOT"/game_over.wav "$W/"
+cp "$ROOT"/index.html "$W/"
 cp -r "$ROOT/css" "$ROOT/js" "$W/"
-cp -r "$ROOT/assets/png" "$ROOT/assets/sfx" "$W/assets/"
+cp -r "$ROOT/assets/png" "$ROOT/assets/sfx" "$ROOT/assets/music" "$W/assets/"
 
 # icône : l'alien pixel art agrandi sans lissage sur le fond du jeu, coins arrondis
 python3 - "$ROOT/assets/png/alien_large_solid.png" "$B/res" <<'PY'
